@@ -5,17 +5,20 @@ public class Roll {
 	private int score;
 	private boolean isRolled = false;
 	
-	public void setScore(int i) {
-		// TODO Auto-generated method stub
-		score = i;
+	/**
+	 * 롤의 점수를 받아 설정한다.
+	 * 굴렸다는 표시를 하기위해 isRolled 값을 참으로 설정한다.
+	 * @param score
+	 */
+	public void setScore(int score) {
+		this.score = score;
 		isRolled = true;
 	}
+	
 	public int getScore() {
-		// TODO Auto-generated method stub
 		return score;
 	}
 	public boolean isRolled() {
-		// TODO Auto-generated method stub
 		return isRolled;
 	}
 }

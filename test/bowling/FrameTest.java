@@ -30,4 +30,5 @@ public class FrameTest extends TestCase {
 		assertEquals(true, frame2.isFinished());
 		assertEquals(false, frame2.isOpen());	
 	}
+
 }
