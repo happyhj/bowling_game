@@ -14,7 +14,6 @@ public class Roll {
 		this.score = score;
 		isRolled = true;
 	}
-	
 	public int getScore() {
 		return score;
 	}
