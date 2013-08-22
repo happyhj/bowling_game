@@ -8,9 +8,9 @@ public class RollTest extends TestCase {
 		Roll roll2 = new Roll();
 
 		roll1.setScore(0);
-		assertEquals(0,	roll1.getScore(0));
+		assertEquals(0,	roll1.getScore());
 		roll2.setScore(3);
-		assertEquals(3,	roll2.getScore(3));
+		assertEquals(3,	roll2.getScore());
 	}
 	public void testIsRolled() throws Exception {
 		Roll roll1 = new Roll();

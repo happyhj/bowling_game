@@ -10,7 +10,7 @@ public class Roll {
 		score = i;
 		isRolled = true;
 	}
-	public int getScore(int i) {
+	public int getScore() {
 		// TODO Auto-generated method stub
 		return score;
 	}
