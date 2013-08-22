@@ -65,4 +65,15 @@ public class FrameTest extends TestCase {
 		assertEquals(false, frame2.isSpare());
 		assertEquals(false, frame2.isStrike());		
 	}
+	public void testGetScore() throws Exception {
+		Frame frame = new Frame();
+		assertEquals(-1, frame.getScore(0));
+		assertEquals(-1, frame.getScore(1));
+		frame.roll(9);
+		assertEquals(9, frame.getScore(0));
+		assertEquals(-1, frame.getScore(1));
+		frame.roll(1);
+		assertEquals(9, frame.getScore(0));
+		assertEquals(1, frame.getScore(1));
+	}
 }

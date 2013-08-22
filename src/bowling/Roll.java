@@ -2,8 +2,7 @@ package bowling;
 
 public class Roll {
 
-	private int score;
-	private boolean isRolled = false;
+	private int score = -1;
 	
 	/**
 	 * 롤의 점수를 받아 설정한다.
@@ -12,12 +11,13 @@ public class Roll {
 	 */
 	public void setScore(int score) {
 		this.score = score;
-		isRolled = true;
 	}
 	public int getScore() {
 		return score;
 	}
 	public boolean isRolled() {
-		return isRolled;
+		if(score == -1)
+			return false;
+		return true;
 	}
 }

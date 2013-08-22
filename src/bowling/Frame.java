@@ -122,11 +122,7 @@ public class Frame {
 		return sb.toString();
 	}
 	
-	public List<Number> getScores() {
-		List<Number> scores = new ArrayList<Number>();
-		for(Roll roll:rolls) {
-			scores.add(roll.getScore());
-		}
-		return scores;
+	public int getScore(int index) {
+		return rolls.get(index).getScore();
 	}
 }
