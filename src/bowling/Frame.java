@@ -68,6 +68,23 @@ public class Frame {
 		return false;
 	}
 
+	public boolean isStrike() {
+		if(rolls.get(0).getScore()==NUMBER_OF_PINS_PER_FRAME) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isSpare() {
+		int scoreSum = 0;
+		for(Roll roll:rolls) {
+			scoreSum = scoreSum + roll.getScore();
+			if(roll.equals(rolls.get(NUMBER_OF_ROLLS_PER_FRAME-1))&&(scoreSum==NUMBER_OF_PINS_PER_FRAME)) {
+				return true;
+			}
+		}
+		return false;
+	}	
 	/**
 	 * 현재프레임의 점수현황을 문자열로 출력한다.
 	 * @return
@@ -103,5 +120,13 @@ public class Frame {
 			
 		}
 		return sb.toString();
+	}
+	
+	public List<Number> getScores() {
+		List<Number> scores = new ArrayList<Number>();
+		for(Roll roll:rolls) {
+			scores.add(roll.getScore());
+		}
+		return scores;
 	}
 }

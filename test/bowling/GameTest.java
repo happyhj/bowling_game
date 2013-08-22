@@ -7,4 +7,7 @@ public class GameTest extends TestCase {
 		Game game = new Game();
 		assertEquals(11, game.getFrames().size());
 	}
+	public void testRollAndPrint() throws Exception {
+		
+	}
 }
