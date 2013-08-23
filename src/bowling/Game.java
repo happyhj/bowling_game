@@ -7,7 +7,7 @@ public class Game {
 	public static final int NUMBER_OF_FRAMES_PER_GAME = 10;
 
 	private List<Frame> frames;
-	private List<Number> calculatedScores;
+	private int[] calculatedScores;
 	private int currentFrame = 1;
 	private int currentRollIndex;
 	
@@ -20,6 +20,10 @@ public class Game {
 		for (int i = 0; i < NUMBER_OF_FRAMES_PER_GAME + 1; i++) {
 			this.frames.add(new Frame());
 		}
+		calculatedScores=new int[NUMBER_OF_FRAMES_PER_GAME];
+	}
+	public int[] getCalculatedScores() {
+		return this.calculatedScores;
 	}
 	
 	/**
@@ -77,12 +81,12 @@ public class Game {
 					}
 					break;
 				}
-				// 끝나지 않은 프레임 발견, 근데 게임은 끝나있는 경우 - 10프레임에서 오픈이 된 케이스
+				// 끝나지 않은 (보너스)프레임 발견, 근데 게임은 끝나있는 경우 - 10프레임에서 오픈이 된 케이스
 				if(isOver()) {
 					System.out.println("게임이 끝났으므로 더이상 공을 던질 수 없습니다.");
 					currentFrame=0;
 					this.currentRollIndex = 0;	
-					break;
+					return;
 				}
 			} 		
 		}
@@ -113,7 +117,47 @@ public class Game {
 	}
 	
 	public void updateCalculatedScores() {
+		System.out.println("점수 계산중...");
+		Frame frame;
+		// finish된 frame이
+		 
 		
+		for(int i=0;i<frames.size()-1;i++) {
+			frame = frames.get(i);
+			
+			//// open일 경우 - 굴린 투구의 핀 수를 더하여 점수로 저장한다.
+			if(frame.isOpen()) {
+				this.calculatedScores[i] = frame.getRolls().get(0).getScore() + frame.getRolls().get(1).getScore();
+				if(i-1>=0)
+					this.calculatedScores[i] = this.calculatedScores[i] + this.calculatedScores[i-1];
+				continue;
+			}
+			//// strike일 경우
+			if(frame.isStrike()) {
+				Frame nextFrame = frames.get(i+1);
+				if(nextFrame.isStrike()) {
+					this.calculatedScores[i] = frames.get(i+2).getRolls().get(0).getScore() + (2 * Frame.NUMBER_OF_PINS_PER_FRAME);
+					if(i-1>=0)
+						this.calculatedScores[i] = this.calculatedScores[i] + this.calculatedScores[i-1];
+					continue;
+				}
+				if(nextFrame.isSpare()||nextFrame.isOpen()) {
+					this.calculatedScores[i] = nextFrame.getRolls().get(0).getScore() +nextFrame.getRolls().get(1).getScore() + Frame.NUMBER_OF_PINS_PER_FRAME;
+					if(i-1>=0)
+						this.calculatedScores[i] = this.calculatedScores[i] + this.calculatedScores[i-1];
+					continue;
+				}
+			}	
+			//// spare일 경우 - 다음프레임의 첫번째 투구가 던져졌다면, 다음 프레임의 첫 투구핀수 + Frame.NUMBER_OF_PINS_PER_FRAME 를 점수로 저장한다.
+			if(frame.isSpare()&&(frames.get(i+1).getRolls().get(0).isRolled())) {
+				List<Roll> nextFrameRolls = frames.get(i+1).getRolls();
+				this.calculatedScores[i] = nextFrameRolls.get(0).getScore() + Frame.NUMBER_OF_PINS_PER_FRAME;
+				if(i-1>=0)
+					this.calculatedScores[i] = this.calculatedScores[i] + this.calculatedScores[i-1];
+				continue;
+			}	
+		}
+
 	}
 	
 	public String generateGameScore() {
@@ -123,9 +167,11 @@ public class Game {
 				break;
 			sb.append(frame.generateScore());
 		}
-		// 여기부터 10번째 프레임 문자열 작업을 수행
+		//// 여기부터 10번째 프레임 문자열 작업을 수행
 		Frame lastFrame = frames.get(NUMBER_OF_FRAMES_PER_GAME-1);
 		Frame bonusFrame = frames.get(NUMBER_OF_FRAMES_PER_GAME);
+		
+		// 아직 10번째 프레임을 플레이하지 않았을 때, 일반적 프레임수 +1의 공백을 넣어준다.
 		if(!lastFrame.isStarted()) {
 			sb.append(lastFrame.generateScore());
 			sb.append(" ");
