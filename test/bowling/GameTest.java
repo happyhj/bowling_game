@@ -150,20 +150,20 @@ public class GameTest extends TestCase {
 		assertEquals(0, game2.getCurrentFrame());	
 	}
 
-	
-	/*
 	public void testRollAndPrint() throws Exception {
 		Game game = new Game();
+		assertEquals("                     ", game.generateGameScore());
 		game.roll(9);
 		game.roll(1);
+		assertEquals("9/                   ", game.generateGameScore());
 		game.roll(8);
 		game.roll(0);
 		game.roll(10);
 		game.roll(10);
 		game.roll(8);
 		game.roll(0);
+		assertEquals("9/8-X X 8-           ", game.generateGameScore());
 		game.roll(10);
-
 		game.roll(8);
 		game.roll(1);
 		game.roll(9);
@@ -173,8 +173,7 @@ public class GameTest extends TestCase {
 		game.roll(10);
 		game.roll(9);
 		game.roll(1);
-
-		System.out.println(game.generateGameScore());
+		assertEquals("9/8-X X 8-X 819/81X9/", game.generateGameScore());
 	}
-	*/
+	
 }

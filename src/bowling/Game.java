@@ -122,14 +122,14 @@ public class Game {
 			if(frame.equals(frames.get(NUMBER_OF_FRAMES_PER_GAME-1)))
 				break;
 			sb.append(frame.generateScore());
-			System.out.println(frame.generateScore());
 		}
 		// 여기부터 10번째 프레임 문자열 작업을 수행
 		Frame lastFrame = frames.get(NUMBER_OF_FRAMES_PER_GAME-1);
 		Frame bonusFrame = frames.get(NUMBER_OF_FRAMES_PER_GAME);
-		System.out.println(lastFrame.generateScore());
-		System.out.println(bonusFrame.generateScore());
-
+		if(!lastFrame.isStarted()) {
+			sb.append(lastFrame.generateScore());
+			sb.append(" ");
+		}			
 		/// 10프레임이 스트라이크인 경우 - 10번째 프레임 문자열 첫문자만 사용, 11번째 프레임 문자 모두 사용
 		if(lastFrame.isStrike()) {
 			sb.append(lastFrame.generateScore().substring(0, 1));
@@ -148,7 +148,6 @@ public class Game {
 		
 		String score = sb.toString();
 		return score;
-//		return score.substring(0, score.length());
 	}
 
 
