@@ -16,6 +16,9 @@ public class Frame {
 		}
 	}
 
+	public List<Roll> getRolls() {
+		return rolls;
+	}
 	/**
 	 * 입력받은 점수대로 공을 굴린다. 처음일 경우는 firstRoll에 점수를 넣고 두번째일 경우에는 secondRoll에, ... 모든
 	 * 기회를 쓰고나서 공을 굴리면 아무작업도 하지않는다.
@@ -49,6 +52,8 @@ public class Frame {
 		Roll lastRoll = rolls.get(rolls.size() - 1);
 		if (lastRoll.isRolled())
 			return true;
+		if (isStrike())
+			return true;
 		return false;
 	}
 
@@ -61,7 +66,8 @@ public class Frame {
 			return false;
 		int scoreSum = 0;
 		for (Roll roll : rolls) {
-			scoreSum = scoreSum + roll.getScore();
+			if(roll.isRolled())
+				scoreSum = scoreSum + roll.getScore();
 		}
 		if (scoreSum < NUMBER_OF_PINS_PER_FRAME)
 			return true;
@@ -76,14 +82,16 @@ public class Frame {
 	}
 	
 	public boolean isSpare() {
-		int scoreSum = 0;
-		for(Roll roll:rolls) {
-			scoreSum = scoreSum + roll.getScore();
-			if(roll.equals(rolls.get(NUMBER_OF_ROLLS_PER_FRAME-1))&&(scoreSum==NUMBER_OF_PINS_PER_FRAME)) {
-				return true;
+		if(!isStrike()) {
+			int scoreSum = 0;
+			for(Roll roll:rolls) {
+				if(roll.isRolled())
+					scoreSum = scoreSum + roll.getScore();
 			}
-		}
-		return false;
+			if(scoreSum == NUMBER_OF_PINS_PER_FRAME)
+				return true;
+			return false;
+		} return false;
 	}	
 	/**
 	 * 현재프레임의 점수현황을 문자열로 출력한다.
@@ -106,7 +114,7 @@ public class Frame {
 				continue;
 			}
 			// SPARE
-			if((!roll.equals(rolls.get(0)))&&(scoreSum==NUMBER_OF_PINS_PER_FRAME)) {
+			if(roll.equals(rolls.get(NUMBER_OF_ROLLS_PER_FRAME-1))&&(scoreSum==NUMBER_OF_PINS_PER_FRAME)) {
 				sb.append("/");
 				continue;
 			}
