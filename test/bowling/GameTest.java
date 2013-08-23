@@ -63,7 +63,7 @@ public class GameTest extends TestCase {
 		assertEquals(0, game.getCurrentFrame());
 		assertEquals(0, game.getCurrentRollIndex());
 	}
-/*	
+
 	public void testIsOver() throws Exception {
 		Game game = new Game();
 		assertEquals(false, game.isOver());
@@ -149,7 +149,7 @@ public class GameTest extends TestCase {
 		assertEquals(true, game2.isOver());
 		assertEquals(0, game2.getCurrentFrame());	
 	}
-*/
+
 	
 	/*
 	public void testRollAndPrint() throws Exception {
