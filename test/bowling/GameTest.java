@@ -3,6 +3,7 @@ package bowling;
 import junit.framework.TestCase;
 
 public class GameTest extends TestCase {
+/*
 	public void testCurrentFrameAndCurrentRollIndex() throws Exception {
 		Game game = new Game();
 		assertEquals(false, game.isOver());
@@ -65,6 +66,7 @@ public class GameTest extends TestCase {
 	}
 
 	public void testIsOver() throws Exception {
+		
 		Game game = new Game();
 		assertEquals(false, game.isOver());
 		assertEquals(1, game.getCurrentFrame());
@@ -175,6 +177,7 @@ public class GameTest extends TestCase {
 		game.roll(1);
 		assertEquals("9/8-X X 8-X 819/81X9/", game.generateGameScore());
 	}
+	
 	public void testCalculatedScores() throws Exception {
 		Game game = new Game();
 		game.roll(9);
@@ -276,4 +279,46 @@ public class GameTest extends TestCase {
 		assertEquals(135, game2.getCalculatedScores()[8]);		
 		assertEquals(144, game2.getCalculatedScores()[9]);
 	}
+	*/
+	public void testScoreBoard() throws Exception {
+		Game game = new Game();
+		game.roll(9);
+		game.roll(1);
+		game.roll(8);
+		game.roll(0);
+		game.roll(10);
+		game.roll(10);
+		game.roll(8);
+		game.roll(0);
+		game.roll(10);
+		game.roll(8);
+		game.roll(1);
+		game.roll(9);
+		game.roll(1);
+		game.roll(8);
+		game.roll(1);
+		System.out.println(game.generateGameScore());
+		System.out.println(game.generateCalculatedScores());
+		game.roll(9);
+		System.out.println(game.generateGameScore());
+		System.out.println(game.generateCalculatedScores());
+		game.roll(1);
+		System.out.println(game.generateGameScore());
+		System.out.println(game.generateCalculatedScores());
+		game.roll(10);
+
+	System.out.println(game.generateGameScore());
+	System.out.println(game.generateCalculatedScores());	
+		assertEquals(18, game.getCalculatedScores()[0]);	
+		assertEquals(26, game.getCalculatedScores()[1]);		
+		assertEquals(54, game.getCalculatedScores()[2]);		
+		assertEquals(72, game.getCalculatedScores()[3]);		
+		assertEquals(80, game.getCalculatedScores()[4]);		
+		assertEquals(99, game.getCalculatedScores()[5]);		
+		assertEquals(108, game.getCalculatedScores()[6]);		
+		assertEquals(126, game.getCalculatedScores()[7]);		
+		assertEquals(135, game.getCalculatedScores()[8]);		
+		assertEquals(155, game.getCalculatedScores()[9]);
+	}
+	
 }
