@@ -2,9 +2,6 @@ package bowling;
 
 public class BonusFrame extends Frame {
 	
-
-	
-	
 	/**
 	 * 두번의 투구기회를 모두 허용한다.
 	 * @return
