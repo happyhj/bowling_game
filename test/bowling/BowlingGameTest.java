@@ -41,6 +41,5 @@ public class BowlingGameTest extends TestCase {
 		System.out.println(bowlingGame.generateLane());
 		bowlingGame.roll(1);
 		System.out.println(bowlingGame.generateLane());
-
 	}
 }
