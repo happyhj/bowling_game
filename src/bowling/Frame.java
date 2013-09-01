@@ -124,7 +124,7 @@ public class Frame {
 				continue;
 			}
 			// OTHER
-			sb.append(roll.getScore());
+			sb.append(roll.getScore()+" ");
 			
 		}
 		return sb.toString().substring(0,sb.toString().length()-1);

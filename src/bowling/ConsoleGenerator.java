@@ -1,12 +1,11 @@
 package bowling;
 
 import java.util.List;
+import static util.Constants.NEW_LINE;
 
 public class ConsoleGenerator implements Generatable {
-	public static final String NEW_LINE = System.getProperty("line.separator");
 
-	@Override
-	public String generateLane(List<Frame> frames,int[] calculatedScores) {
+	public String generatePlayerScore(List<Frame> frames,int[] calculatedScores) {
 		// TODO Auto-generated method stub
 		StringBuilder sb = new StringBuilder();
 
@@ -48,19 +47,18 @@ public class ConsoleGenerator implements Generatable {
 		}
 		/// 10프레임이 스페어인 경우 - 10번째 프레임 문자열 모두 사용, 11번째 프레임 첫 문자만 사용
 		if(lastFrame.isSpare()) {
-			sb.append(lastFrame.generateScore());
+			sb.append(lastFrame.generateScore().replaceAll("\\s",""));
 			sb.append(bonusFrame.generateScore().substring(0, 1));
 		}
 		/// 10프레임이 오픈인 경우 - 10번째 프레임 문자열 모두 사용 + 공백문자
 		if(lastFrame.isOpen()) {
-			sb.append(lastFrame.generateScore());
+			sb.append(lastFrame.generateScore().replaceAll("\\s",""));
 			sb.append(" ");
 		}
 		
 		/// 10프레임이 첫투구만 한 경우- 10번째 프레임 문자열 모두 사용 + 공백문자
 		if(lastFrame.isStarted()&&!lastFrame.isFinished()) {
 			sb.append(lastFrame.generateScore());
-			sb.append(" ");
 		}	
 		sb.append("|");
 

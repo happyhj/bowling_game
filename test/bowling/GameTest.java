@@ -323,30 +323,31 @@ public class GameTest extends TestCase {
 	*/
 	public void testPerfectGame() throws Exception {
 		Game game = new Game();
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 		game.roll(10);		
-		System.out.println(game.generateLane(new ConsoleGenerator()));
+		System.out.println(game.generatePlayerScore(new ConsoleGenerator()));
 	
 	}
 }

@@ -53,7 +53,29 @@ public class Game {
 			return this.currentRollIndex;
 		return this.currentRollIndex+1;
 	}
-	
+	public String getThrowInformation() {
+		// 현재 투구정보 출력 부분 - 시작
+		int currentRollIndex=0;
+		while(true) {
+			if(frames.get(currentFrame-1).getRolls().get(currentRollIndex).isRolled())
+				currentRollIndex++;
+			else 
+				break;
+		}
+		currentRollIndex++;
+		this.currentRollIndex = currentRollIndex;
+		String rollPrint = "";
+		if(currentFrame<=NUMBER_OF_FRAMES_PER_GAME)
+			rollPrint = currentFrame+"번째 프레임, "+currentRollIndex+"번째 투구";
+		if(currentFrame==NUMBER_OF_FRAMES_PER_GAME+1) {
+			if(frames.get(NUMBER_OF_FRAMES_PER_GAME-1).isStrike())
+				rollPrint = (currentFrame-1)+"번째 프레임, "+(currentRollIndex+1)+"번째 투구";
+			if(!frames.get(NUMBER_OF_FRAMES_PER_GAME-1).isStrike())	
+				rollPrint = (currentFrame-1)+"번째 프레임, "+(currentRollIndex+2)+"번째 투구";
+		}
+		// 현재 투구정보 출력 부분 -끝 
+		return rollPrint;
+	}
 	/**
 	 * 투구한다.
 	 * @param score
@@ -62,28 +84,7 @@ public class Game {
 		for (Frame frame:frames){
 			if(!frame.isFinished()) {
 				if(!isOver()) {
-					// 현재 투구정보 출력 부분 - 시작
-					int currentRollIndex=0;
-					while(true) {
-						if(frames.get(currentFrame-1).getRolls().get(currentRollIndex).isRolled())
-							currentRollIndex++;
-						else 
-							break;
-					}
-					currentRollIndex++;
-					this.currentRollIndex = currentRollIndex;
-					String rollPrint = currentFrame+"번째 프레임, "+currentRollIndex+"번째 투구 던짐, 핀 "+score+"개 쓰러트림";
-					// 현재 투구정보 출력 부분 -끝 
-					
-					
 					frame.roll(score);
-					
-					
-					if(frame.isStrike())
-						rollPrint = rollPrint + " STRIKE!!";
-					if(frame.isSpare())
-						rollPrint = rollPrint + " SPARE!";
-					System.out.println(rollPrint);
 					
 					if(frame.isFinished()) {
 						currentFrame++;
@@ -116,18 +117,18 @@ public class Game {
 		Frame bonusFrame = frames.get(NUMBER_OF_FRAMES_PER_GAME);
 		// 마지막 프레임이 끝났고 오픈이면 게임 끝
 		if(lastFrame.isFinished()&&lastFrame.isOpen()) {
-			System.out.println("마지막프레임이 오픈으로 보너스프레임없이게임끝");
+	//		System.out.println("마지막프레임이 오픈으로 보너스프레임없이게임끝");
 			return true;		
 		}
 		// 마지막 프레임이 스트라이크면, 보너스프레임이 끝나야 게임이 끝남 
 		if(lastFrame.isFinished()&&lastFrame.isStrike()&&bonusFrame.isFinished()) {
-			System.out.println("마지막프레임이 스트라이크, 보너스프레임 두번굴리고 게임끝");
+	//		System.out.println("마지막프레임이 스트라이크, 보너스프레임 두번굴리고 게임끝");
 			return true;
 		}
 		
 		// 마지막 프레임이 스페어면, 보너스 프레임의 시작되었으면 게임 끝남
 		if(lastFrame.isFinished()&&lastFrame.isSpare()&&bonusFrame.isStarted()) {
-			System.out.println("마지막프레임이 스페어, 보너스프레임 한번굴리고 게임끝");
+	//		System.out.println("마지막프레임이 스페어, 보너스프레임 한번굴리고 게임끝");
 			return true;
 		}
 		
@@ -190,12 +191,11 @@ public class Game {
 				this.calculatedScores[i] = frame.getRolls().get(0).getScore() + frame.getRolls().get(1).getScore();
 				if(i-1>=0)
 					this.calculatedScores[i] = this.calculatedScores[i] + this.calculatedScores[i-1];
-				continue;
+//				continue;
 			}			
 
 			//// 보너스 프레임(11)굴리고나서 게임 끝났을때 - 마지막 프레임, 보너스프레임의 투구핀 수를 다 더하여 점수로저장한다. 게임 끝
 			if(this.isOver()&&(i==frames.size()-1)&&(frame.isStarted())) {
-				System.out.println("마지막 공굴리고 점수 계산 중 보너스");
 				Frame prevFrame = frames.get(i-1);					
 				
 				this.calculatedScores[i-1] = prevFrame.getRolls().get(0).getScore();
@@ -208,22 +208,17 @@ public class Game {
 
 				if(i-1>=0)
 					this.calculatedScores[i-1] = this.calculatedScores[i-1] + this.calculatedScores[i-2];
-				
-				continue;
+//				continue;
 			}
 		}
 
 	}
 	
-	public String generateLane(Generatable generator) {
-		return generator.generateLane(frames, calculatedScores);
+	public String generatePlayerScore(Generatable generator) {
+		return generator.generatePlayerScore(frames, calculatedScores);
 	}	
 	
-	public class GameOverException extends RuntimeException { 
-		public GameOverException(String message) {
-			super(message); 
-		}
-	}
+
 }
 
 
