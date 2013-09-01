@@ -2,15 +2,14 @@ package bowling;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static util.Constants.NEW_LINE;
+import java.util.Scanner;
 
 public class BowlingGame {
 	List<Game> games;
 	private int currentFrameIndex;
 
 	// 기본 플레이어는 1 명.
-	BowlingGame() {
+	public BowlingGame() {
 		games = new ArrayList<Game>();
 		games.add(new Game());
 		currentFrameIndex = 1;
@@ -23,21 +22,10 @@ public class BowlingGame {
 		}
 		currentFrameIndex = 1;
 	}
+	
+	public String generateLane(GameGenerable gameGenerator) {
+		return gameGenerator.generateGameDashBoard(games,currentFrameIndex);
 
-	public String generateLane() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getThrowInformation());
-		sb.append(NEW_LINE);
-		
-		// for(Game game: games) {
-		for (int i = 0; i < games.size(); i++) {
-			Game game = games.get(i);
-			sb.append("Player " + (i + 1));
-			sb.append(NEW_LINE);
-			sb.append(game.generatePlayerScore(new ConsoleGenerator()));
-			sb.append(NEW_LINE);
-		}
-		return sb.toString();
 	}
 
 	public String getThrowInformation() {
@@ -90,14 +78,29 @@ public class BowlingGame {
 			}
 		}
 		
-		System.out.println(generateLane());
+		System.out.println(generateLane(new ConsoleGameGenerator()));
 		
 		// 모든 게임이 끝났을 경우 게임오버 입섹션을 던진다.
 		for(Game game:games) {
 			if(!game.isOver())
-				return generateLane();
+				return generateLane(new ConsoleGameGenerator());
 		}
 		
 		throw new GameOverException("이 레인의 게임이 종료되었습니다.");
 	}
+
+	public static void main(String[] args) {
+		System.out.println("볼링을 같이 할 플레이어의 수를 입력해 주세요.");
+		Scanner sc = new Scanner(System.in);
+		int numberOfPlayer = sc.nextInt();
+		BowlingGame bowlingGame = new BowlingGame(numberOfPlayer);
+		while(true) {
+			System.out.println(bowlingGame.getThrowInformation());
+			System.out.println("쓰러트린 핀의 수를 입력하세요.");
+			Scanner pin = new Scanner(System.in);
+			int hitPoint = pin.nextInt();
+			bowlingGame.roll(hitPoint);
+		}
+	}
+	
 }
