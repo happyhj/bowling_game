@@ -7,7 +7,7 @@ public class Frame {
 	public static final int NUMBER_OF_PINS_PER_FRAME = 10;
 	public static final int NUMBER_OF_ROLLS_PER_FRAME = 2;
 
-	private List<Roll> rolls;
+	protected List<Roll> rolls;
 
 	Frame() {
 		rolls = new ArrayList<Roll>();
@@ -105,29 +105,29 @@ public class Frame {
 			
 			// BEFORE ROLLED
 			if(!roll.isRolled()) {
-				sb.append(" ");
+				sb.append("  ");
 				continue;
 			}
 			// STRIKE
 			if((roll.equals(rolls.get(0)))&&(scoreSum==NUMBER_OF_PINS_PER_FRAME)) {
-				sb.append("X");
+				sb.append("X ");
 				continue;
 			}
 			// SPARE
 			if(roll.equals(rolls.get(NUMBER_OF_ROLLS_PER_FRAME-1))&&(scoreSum==NUMBER_OF_PINS_PER_FRAME)) {
-				sb.append("/");
+				sb.append("/ ");
 				continue;
 			}
 			// GUTTER
 			if(roll.getScore()==0) {
-				sb.append("-");
+				sb.append("- ");
 				continue;
 			}
 			// OTHER
 			sb.append(roll.getScore());
 			
 		}
-		return sb.toString();
+		return sb.toString().substring(0,sb.toString().length()-1);
 	}
 	
 	public int getScore(int index) {

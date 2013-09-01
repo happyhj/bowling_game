@@ -3,6 +3,8 @@ package bowling;
 import java.util.ArrayList;
 import java.util.List;
 
+import bowling.Generatable;
+
 public class Game {
 	public static final int NUMBER_OF_FRAMES_PER_GAME = 10;
 
@@ -15,11 +17,12 @@ public class Game {
 	 * 10프레임짜리 게임의 경우 마지막 프레임의 보너스 throw를 포함하는 1 roll짜리 효력만 지닌 Frame을 추가하여
 	 * 11프레임을 만든다.
 	 */
-	Game() {
+	public Game() {
 		frames = new ArrayList<Frame>();
-		for (int i = 0; i < NUMBER_OF_FRAMES_PER_GAME + 1; i++) {
+		for (int i = 0; i < NUMBER_OF_FRAMES_PER_GAME; i++) {
 			this.frames.add(new Frame());
 		}
+		this.frames.add(new BonusFrame());
 		calculatedScores=new int[NUMBER_OF_FRAMES_PER_GAME];
 	}
 	
@@ -149,7 +152,7 @@ public class Game {
 				continue;
 			}
 		
-			//// strike이고 마지막 프레임이 아닐 경우
+			//// strike이고 마지막 프레임 아닐 경우
 			if(frame.isStrike()&&(i<frames.size()-2)) {
 				Frame nextFrame = frames.get(i+1);
 				// 다음 프레임이 strike라면 현재투구 다음 하나밖에 확보하지 못했으므로 다다음 프레임이 Start 되어있는지 확인 후 시작되었다면 점수를 계산한다. 
@@ -173,7 +176,7 @@ public class Game {
 			
 			//// spare이고 마지막프레임(10,11)이 아닐경우 - 
 			// 다음프레임의 첫번째 투구가 던져졌다면, 다음 프레임의 첫 투구핀수 + Frame.NUMBER_OF_PINS_PER_FRAME 를 점수로 저장한다.
-			if(frame.isSpare()&&(frames.get(i+1).getRolls().get(0).isRolled())&&(i<frames.size()-2)) {
+			if(frame.isSpare()&&(i<frames.size()-2)&&(frames.get(i+1).getRolls().get(0).isRolled())) {
 				List<Roll> nextFrameRolls = frames.get(i+1).getRolls();
 				this.calculatedScores[i] = nextFrameRolls.get(0).getScore() + Frame.NUMBER_OF_PINS_PER_FRAME;
 				if(i-1>=0)
@@ -188,15 +191,16 @@ public class Game {
 				if(i-1>=0)
 					this.calculatedScores[i] = this.calculatedScores[i] + this.calculatedScores[i-1];
 				continue;
-			}
-			
+			}			
 
 			//// 보너스 프레임(11)굴리고나서 게임 끝났을때 - 마지막 프레임, 보너스프레임의 투구핀 수를 다 더하여 점수로저장한다. 게임 끝
 			if(this.isOver()&&(i==frames.size()-1)&&(frame.isStarted())) {
 				System.out.println("마지막 공굴리고 점수 계산 중 보너스");
-				Frame prevFrame = frames.get(i-1);	
-				this.calculatedScores[i-1] = this.calculatedScores[i-1] + prevFrame.getRolls().get(0).getScore();
-				this.calculatedScores[i-1] = this.calculatedScores[i-1] + prevFrame.getRolls().get(1).getScore();
+				Frame prevFrame = frames.get(i-1);					
+				
+				this.calculatedScores[i-1] = prevFrame.getRolls().get(0).getScore();
+				if(prevFrame.getRolls().get(1).isRolled())
+					this.calculatedScores[i-1] = this.calculatedScores[i-1] + prevFrame.getRolls().get(1).getScore();
 				if(frame.getRolls().get(0).isRolled())
 					this.calculatedScores[i-1] = this.calculatedScores[i-1] + frame.getRolls().get(0).getScore();
 				if(frame.getRolls().get(1).isRolled())
@@ -208,64 +212,18 @@ public class Game {
 				continue;
 			}
 		}
+
 	}
 	
-	/**
-	 * 투구시 넘어간 핀 수를 규칙에 맞게 문자열로 반환한다.
-	 * @return
-	 */
-	public String generateGameScore() {
-		StringBuilder sb = new StringBuilder();
-		for(Frame frame:frames){
-			if(frame.equals(frames.get(NUMBER_OF_FRAMES_PER_GAME-1)))
-				break;
-			sb.append(frame.generateScore());
-		}
-		//// 여기부터 10번째 프레임 문자열 작업을 수행
-		Frame lastFrame = frames.get(NUMBER_OF_FRAMES_PER_GAME-1);
-		Frame bonusFrame = frames.get(NUMBER_OF_FRAMES_PER_GAME);
-		
-		// 아직 10번째 프레임을 플레이하지 않았을 때, 일반적 프레임수 +1의 공백을 넣어준다.
-		if(!lastFrame.isStarted()) {
-			sb.append(lastFrame.generateScore());
-			sb.append(" ");
-		}			
-		/// 10프레임이 스트라이크인 경우 - 10번째 프레임 문자열 첫문자만 사용, 11번째 프레임 문자 모두 사용
-		if(lastFrame.isStrike()) {
-			sb.append(lastFrame.generateScore().substring(0, 1));
-			sb.append(bonusFrame.generateScore());
-		}
-		/// 10프레임이 스페어인 경우 - 10번째 프레임 문자열 모두 사용, 11번째 프레임 첫 문자만 사용
-		if(lastFrame.isSpare()) {
-			sb.append(lastFrame.generateScore());
-			sb.append(bonusFrame.generateScore().substring(0, 1));
-		}
-		/// 10프레임이 오픈인 경우 - 10번째 프레임 문자열 모두 사용 + 공백문자
-		if(lastFrame.isOpen()) {
-			sb.append(lastFrame.generateScore());
-			sb.append(" ");
-		}
-		
-		/// 10프레임이 첫투구만 한 경우- 10번째 프레임 문자열 모두 사용 + 공백문자
-		if(lastFrame.isStarted()&&!lastFrame.isFinished()) {
-			sb.append(lastFrame.generateScore());
-			sb.append(" ");
-		}	
-		
-		String score = sb.toString();
-		return score;
-	}
-
-	public String generateCalculatedScores() {
-		StringBuilder sb = new StringBuilder();
-		int[] Scores = this.getCalculatedScores();
-		for(int score : Scores) {
-			sb.append(score);
-			sb.append(" ");
-		}
-		return sb.toString();
-	}
-
-
+	public String generateLane(Generatable generator) {
+		return generator.generateLane(frames, calculatedScores);
+	}	
 	
+	public class GameOverException extends RuntimeException { 
+		public GameOverException(String message) {
+			super(message); 
+		}
+	}
 }
+
+

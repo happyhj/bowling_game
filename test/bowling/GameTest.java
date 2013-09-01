@@ -279,7 +279,7 @@ public class GameTest extends TestCase {
 		assertEquals(135, game2.getCalculatedScores()[8]);		
 		assertEquals(144, game2.getCalculatedScores()[9]);
 	}
-	*/
+
 	public void testScoreBoard() throws Exception {
 		Game game = new Game();
 		game.roll(9);
@@ -320,5 +320,33 @@ public class GameTest extends TestCase {
 		assertEquals(135, game.getCalculatedScores()[8]);		
 		assertEquals(155, game.getCalculatedScores()[9]);
 	}
+	*/
+	public void testPerfectGame() throws Exception {
+		Game game = new Game();
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);
+		System.out.println(game.generateLane(new ConsoleGenerator()));
+		game.roll(10);		
+		System.out.println(game.generateLane(new ConsoleGenerator()));
 	
+	}
 }
